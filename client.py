@@ -12,7 +12,7 @@ w3 = Web3(provider)
 print(w3.is_connected())
 
 #replace the address with your contract address (!very important)
-deployed_contract_address = '0x9485fBb9D63575b27E689850f66bA9B71889b25B'
+deployed_contract_address = '0x352c8A9155194C17459A99E03be537C7f9e14b7a'
 
 #path of the contract json file. edit it with your contract json file
 compiled_contract_path ="build/contracts/Payment.json"
@@ -29,7 +29,7 @@ while not nx.is_connected(G):
 
 for i in range(n):
     user_registration = contract.functions.registerUser(i,'user_{}'.format(i))
-print(user_registration)
+    print(user_registration)
 
 '''
 #Calling a contract function createAcc(uint,uint,uint)
