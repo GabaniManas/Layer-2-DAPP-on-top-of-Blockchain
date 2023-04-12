@@ -10,8 +10,6 @@ contract Payment {
 uint[] ids;
 uint[] public path;
    mapping (uint => mapping (uint=>uint)) public joint_account;
-   mapping(uint => bool) visited;
-  mapping(uint => bool) processed;
     mapping(uint => uint[]) public adj_mat; 
     uint public total_nodes;
     struct Node {
@@ -45,12 +43,12 @@ uint[] public path;
    }
 
 
-    function sendAmount(uint user_id_1,uint user_id_2, uint amount) public returns(bool)
+    function sendAmount(uint user_id_1,uint user_id_2, uint amount) public returns(bool, uint)
     {
        bool ispath;
         delete path;
         ispath=check_path(user_id_1,user_id_2);
-        if(!ispath) return false;
+        if(!ispath) return (false,1000000);
 
         // uint[] memory path = new uint[](size);
 
@@ -66,14 +64,14 @@ uint[] public path;
         for(uint j=path.length - 1; j>=1; j--){
             if(joint_account[path[j]][path[j-1]] < amount){
                 decision = false;
-                return decision;
+                return (decision,joint_account[path[j]][path[j-1]]);
             }
         }
         for(uint j=path.length - 1; j>=1; j--){
             joint_account[path[j]][path[j-1]] -= amount;
             joint_account[path[j-1]][path[j]] += amount;
         }
-        return true;
+        return (true, joint_account[path[path.length-1]][path[path.length-2]] + amount);
         // return path;
         
     }

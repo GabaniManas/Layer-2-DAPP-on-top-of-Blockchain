@@ -19,7 +19,7 @@ print(w3.is_connected())
 print("HIIIIIIIIIIIII")
 
 #replace the address with your contract address (!very important)
-deployed_contract_address = '0x2a4d93542e7Ad7C772b21EB999DE568a9C6F9a1a'
+deployed_contract_address = '0x7A98C0f863b30B1e6b0F9AE88Ad5493E940139D8'
 
 #path of the contract json file. edit it with your contract json file
 compiled_contract_path ="build/contracts/Payment.json"
@@ -79,13 +79,14 @@ for i in range(1,1011):
         while(acc_1 == acc_2):
             acc_2 = random.randint(1,n)
         # print(acc_1, acc_2)
-        isSuccessful = contract.functions.sendAmount(acc_1, acc_2, 1).call()
+        isSuccessful, sender_amount_before_transaction = contract.functions.sendAmount(acc_1, acc_2, 1).call()
         # print(isSuccessful)
         if(isSuccessful):
             contract.functions.sendAmount(acc_1, acc_2, 1).transact({'txType':"0x3", 'from':w3.eth.accounts[i%10], 'gas':24096380})
             successful_txn += 1
         else:
             failed_txn += 1
+            print("Transaction: " +str(i)+ ": Failed as sender("+str(acc_1)+") account has", sender_amount_before_transaction,"coins before transaction." )
 
 print(time.time()-now)
 # for i in range(10):
