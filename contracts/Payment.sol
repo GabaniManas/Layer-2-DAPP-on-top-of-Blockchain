@@ -20,7 +20,7 @@ uint[] public path;
 
 
 
-
+   //function to register user
    function registerUser(uint use_id, string memory user_name) public returns (uint)
    {
        total_nodes=total_nodes+1;
@@ -29,8 +29,10 @@ uint[] public path;
        return use_id;
    }
 
+   //create account between user1 and user
    function createAcc(uint user_id_1,uint user_id_2,uint balance1,uint balance2) public returns(uint)
    {
+       //stores balance between user1 and user2
        joint_account[user_id_1][user_id_2]=balance1;
        joint_account[user_id_2][user_id_1]=balance2;
        uint[] storage existingValues1 = adj_mat[user_id_1];
@@ -42,16 +44,16 @@ uint[] public path;
        return joint_account[user_id_1][user_id_2];
    }
 
-
+    //function to send amount from user1 and user2
     function sendAmount(uint user_id_1,uint user_id_2, uint amount) public returns(bool, uint)
     {
-       bool ispath;
+        //stores if there is path between the users or not
+        bool ispath;
         delete path;
         ispath=check_path(user_id_1,user_id_2);
         if(!ispath) return (false,1000000);
 
-        // uint[] memory path = new uint[](size);
-
+        //populate the path with users which are between user1 and user2 in shortest path 
         uint curr=user_id_2;
         while(curr!=user_id_1)
         {
@@ -60,6 +62,7 @@ uint[] public path;
         }
         path.push(user_id_1);
 
+        //check if the trasaction can be possible
         bool decision = true;
         for(uint j=path.length - 1; j>=1; j--){
             if(joint_account[path[j]][path[j-1]] < amount){
@@ -67,6 +70,8 @@ uint[] public path;
                 return (decision,joint_account[path[j]][path[j-1]]);
             }
         }
+
+        //transfer the amount between the users 
         for(uint j=path.length - 1; j>=1; j--){
             joint_account[path[j]][path[j-1]] -= amount;
             joint_account[path[j-1]][path[j]] += amount;
@@ -76,6 +81,7 @@ uint[] public path;
         
     }
 
+    //check if there path exist from user1 and user2
     function check_path(uint start,uint end) public returns (bool)
     {
 
@@ -91,6 +97,7 @@ uint[] public path;
         uint f = 0;
         uint r = 0;
 
+        //BFS algorithm
         if(start==end)
         {
             return true;
@@ -106,10 +113,11 @@ uint[] public path;
              if (current == end) {
                 return true;
             }
-
+            //get all the neighbouring nodes
              for (uint i = 0; i < adj_mat[current].length; i++) {
                  uint neighbor = adj_mat[current][i];
 
+                //check if the nodes are already visited
                 if (! user_nodes[neighbor].visited) {
                     queue[r++] = neighbor;
                     user_nodes[neighbor].visited = true;
@@ -123,18 +131,17 @@ uint[] public path;
 
     }
 
+    //get parent of the node in the bfs path
     function getParent(uint node) public view returns (uint) {
         return user_nodes[node].parent;
     }
 
-
+    //close account between user1 and user2
     function closeAccount(uint user_id_1, uint user_id_2) public
     {
         delete joint_account[user_id_1][user_id_2];
         delete joint_account[user_id_2][user_id_1];
-        // bool and = true;
 
     }
 
-    // uint a = registerUser(1, "user_1user_name");
 }

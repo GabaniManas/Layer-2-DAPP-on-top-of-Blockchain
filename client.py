@@ -16,10 +16,8 @@ w3 = Web3(provider)
 #check if ethereum is connected
 print(w3.is_connected())
 
-print("HIIIIIIIIIIIII")
-
 #replace the address with your contract address (!very important)
-deployed_contract_address = '0x7A98C0f863b30B1e6b0F9AE88Ad5493E940139D8'
+deployed_contract_address = '0x35E5F20Ae55Bcb82753F5c561b1CAA8f932Fd308'
 
 #path of the contract json file. edit it with your contract json file
 compiled_contract_path ="build/contracts/Payment.json"
@@ -40,18 +38,11 @@ print(G)
 for i,j in G.edges():
     graph[i][j], graph[j][i] = 1, 1
 
-# sum = 0
 for i in graph:
     print(i)
-#     for j in i:
-#         sum += j
-# print(sum)
 
 for i in range(100):
-    # user_registration = contract.functions.registerUser(i+1,'user_{}'.format(i+1)).transact({'txType':"0x3", 'from':w3.eth.accounts[0], 'gas':2409638})
     user_registration = contract.functions.registerUser(i+1,'user_{}'.format(i+1)).transact({'txType':"0x3", 'from':w3.eth.accounts[0], 'gas':2409638})
-    # user= contract.functions.getUserId(i+1).call()
-    # print(user)
     print(user_registration)
 
 for i in range(n):
@@ -67,10 +58,11 @@ successful_txn = 0
 failed_txn = 0
 for i in range(1,1011):
     if(i%101 == 0):
-        print('\nBatch', i/100,':')
+        print('Batch', i/100,':')
         print('Successful Transactions:',successful_txn)
         print('Failed Transactions:', failed_txn)
         print('Ratio:', successful_txn*0.01)
+        print()
         successful_txn = 0
         failed_txn = 0
     else:
@@ -87,17 +79,7 @@ for i in range(1,1011):
         else:
             failed_txn += 1
             print("Transaction: " +str(i)+ ": Failed as sender("+str(acc_1)+") account has", sender_amount_before_transaction,"coins before transaction." )
-
 print(time.time()-now)
-# for i in range(10):
-#     # acc_1 = random.randint(1,100)
-#     # acc_2 = random.randint(1,100)
-#     acc_1 = i+1
-#     acc_2 = i+2
-#     # while(acc_1 == acc_2):
-#     #     acc_2 = random.randint(1,100)
-#     joint_acc = contract.functions.createAcc(acc_1, acc_2, 10, 14).transact({'txType':"0x3", 'from':w3.eth.accounts[0], 'gas':2409638})
-#     print(joint_acc)
 
 
 '''
