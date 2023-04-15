@@ -17,7 +17,7 @@ w3 = Web3(provider)
 print(w3.is_connected())
 
 #replace the address with your contract address (!very important)
-deployed_contract_address = '0x35E5F20Ae55Bcb82753F5c561b1CAA8f932Fd308'
+deployed_contract_address = '0x8C99C3AfCe0dC46D361C17295262632b6D7a8a6f'
 
 #path of the contract json file. edit it with your contract json file
 compiled_contract_path ="build/contracts/Payment.json"
@@ -41,7 +41,7 @@ for i,j in G.edges():
 for i in graph:
     print(i)
 
-for i in range(100):
+for i in range(n):
     user_registration = contract.functions.registerUser(i+1,'user_{}'.format(i+1)).transact({'txType':"0x3", 'from':w3.eth.accounts[0], 'gas':2409638})
     print(user_registration)
 
@@ -71,14 +71,20 @@ for i in range(1,1011):
         while(acc_1 == acc_2):
             acc_2 = random.randint(1,n)
         # print(acc_1, acc_2)
-        isSuccessful, sender_amount_before_transaction = contract.functions.sendAmount(acc_1, acc_2, 1).call()
+        isSuccessful, sender_amount_before_transaction = contract.functions.sendAmount(acc_1, acc_2).call()
         # print(isSuccessful)
         if(isSuccessful):
-            contract.functions.sendAmount(acc_1, acc_2, 1).transact({'txType':"0x3", 'from':w3.eth.accounts[i%10], 'gas':24096380})
+            contract.functions.sendAmount(acc_1, acc_2).transact({'txType':"0x3", 'from':w3.eth.accounts[i%10], 'gas':24096380})
             successful_txn += 1
         else:
             failed_txn += 1
             print("Transaction: " +str(i)+ ": Failed as sender("+str(acc_1)+") account has", sender_amount_before_transaction,"coins before transaction." )
+
+print("\nClosing all the accounts:")
+for i in range(1,n+1):
+    for j in range(i+1, n+1):
+        contract.functions.closeAccount(i,j).transact({'txType':"0x3", 'from':w3.eth.accounts[i%10], 'gas':24096380})
+
 print(time.time()-now)
 
 

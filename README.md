@@ -5,8 +5,8 @@ A Dapp, or decentralized application, is a software application that runs on a d
 - Install nodejs, npm, ganache-cli, truffle, web3
 - Run the following commands:
     - Open CMD and run: `ganache-cli --gasLimit 1000000000000 --gasPrice 2000`
-    - Open another CMP and run: `truffle migrate`
-    - A contract will be generated. Copy the `contract address` value and paste it in `deployed_contract_address` value
+    - Open another CMD and run: `truffle migrate`
+    - A contract will be generated. Copy the `contract address` value and paste it in `deployed_contract_address` value in client.py
         - Eg: 
              
             `> transaction hash:0x344ecd8fbc9c75d4d832294651386b599c9e9365c35c3657131ea888ddcdbc5b`
@@ -30,3 +30,10 @@ A Dapp, or decentralized application, is a software application that runs on a d
 
             `> total cost:          0.000000002547112 ETH`
     - Run `python client.py`
+
+## Output
+- For every batch of 100 transactions, following is generated:
+    - List of failed transactions
+    - Successful Transactions
+    - Failed Transactions
+    - Ratio of successful transactions over total transaction per batch

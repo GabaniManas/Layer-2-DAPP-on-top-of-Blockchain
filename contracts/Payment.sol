@@ -45,9 +45,10 @@ uint[] public path;
    }
 
     //function to send amount from user1 and user2
-    function sendAmount(uint user_id_1,uint user_id_2, uint amount) public returns(bool, uint)
+    function sendAmount(uint user_id_1,uint user_id_2) public returns(bool, uint)
     {
         //stores if there is path between the users or not
+        uint amount = 1;
         bool ispath;
         delete path;
         ispath=check_path(user_id_1,user_id_2);
