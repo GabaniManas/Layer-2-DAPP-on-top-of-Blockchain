@@ -143,6 +143,26 @@ uint[] public path;
         delete joint_account[user_id_1][user_id_2];
         delete joint_account[user_id_2][user_id_1];
 
+        uint len=adj_mat[user_id_1].length;
+        for(uint i=0;i<adj_mat[user_id_1].length;i++)
+        {
+            if(adj_mat[user_id_1][i]==user_id_2)
+            {
+                delete adj_mat[user_id_1][i];
+                break;
+            }
+        }
+
+        len=adj_mat[user_id_2].length;
+        for(uint i=0;i<adj_mat[user_id_2].length;i++)
+        {
+            if(adj_mat[user_id_2][i]==user_id_1)
+            {
+                delete adj_mat[user_id_2][i];
+                break;
+            }
+        }
+
     }
 
 }
